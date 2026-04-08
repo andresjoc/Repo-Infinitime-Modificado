@@ -1,5 +1,6 @@
 #include "components/heartrate/HeartRateController.h"
 #include <heartratetask/HeartRateTask.h>
+#include <components/ble/RawPpgService.h>
 #include <systemtask/SystemTask.h>
 
 using namespace Pinetime::Controllers;
@@ -32,4 +33,14 @@ void HeartRateController::SetHeartRateTask(Pinetime::Applications::HeartRateTask
 
 void HeartRateController::SetService(Pinetime::Controllers::HeartRateService* service) {
   this->service = service;
+}
+
+void HeartRateController::SetRawPpgService(Pinetime::Controllers::RawPpgService* rawPpgService) {
+  this->rawPpgService = rawPpgService;
+}
+
+void HeartRateController::UpdateRawValues(uint16_t hrs, uint16_t als) {
+  if (rawPpgService != nullptr) {
+    rawPpgService->OnNewRawPpgValue(hrs, als);
+  }
 }

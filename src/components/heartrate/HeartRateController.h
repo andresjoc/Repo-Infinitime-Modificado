@@ -4,6 +4,10 @@
 #include <components/ble/HeartRateService.h>
 
 namespace Pinetime {
+  namespace Controllers {
+    class RawPpgService;
+  }
+
   namespace Applications {
     class HeartRateTask;
   }
@@ -33,12 +37,15 @@ namespace Pinetime {
       }
 
       void SetService(Pinetime::Controllers::HeartRateService* service);
+      void SetRawPpgService(Pinetime::Controllers::RawPpgService* rawPpgService);
+      void UpdateRawValues(uint16_t hrs, uint16_t als);
 
     private:
       Applications::HeartRateTask* task = nullptr;
       States state = States::Stopped;
       uint8_t heartRate = 0;
       Pinetime::Controllers::HeartRateService* service = nullptr;
+      Pinetime::Controllers::RawPpgService* rawPpgService = nullptr;
     };
   }
 }
