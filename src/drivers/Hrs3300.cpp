@@ -17,6 +17,7 @@ using namespace Pinetime::Drivers;
 
 namespace {
   static constexpr uint8_t ledDriveCurrentValue = 0x2f;
+  static constexpr uint8_t hwtConfig0ms = 0x00;
 }
 
 /** Driver for the HRS3300 heart rate sensor.
@@ -33,8 +34,10 @@ void Hrs3300::Init() {
   Disable();
   vTaskDelay(100);
 
-  // HRS disabled, 50ms wait time between ADC conversion period, current 12.5mA
-  WriteRegister(static_cast<uint8_t>(Registers::Enable), 0x50);
+  // HRS disabled, 0ms wait time between ADC conversion periods.
+  // This allows running the acquisition loop at 25Hz (40ms period),
+  // while the sensor's typical HRS ADC conversion time is 25ms.
+  WriteRegister(static_cast<uint8_t>(Registers::Enable), hwtConfig0ms);
 
   // Current 12.5mA and low nibble 0xF.
   // Note: Setting low nibble to 0x8 per the datasheet results in

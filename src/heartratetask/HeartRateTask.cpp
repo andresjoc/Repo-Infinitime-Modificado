@@ -199,6 +199,7 @@ void HeartRateTask::StopMeasurement() {
 
 void HeartRateTask::HandleSensorData() {
   auto sensorData = heartRateSensor.ReadHrsAls();
+  controller.UpdateRawValues(sensorData.hrs, sensorData.als);
   int8_t ambient = ppg.Preprocess(sensorData.hrs, sensorData.als);
   int bpm = ppg.HeartRate();
 
