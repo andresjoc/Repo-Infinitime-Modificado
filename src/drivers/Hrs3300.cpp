@@ -33,8 +33,9 @@ void Hrs3300::Init() {
   Disable();
   vTaskDelay(100);
 
-  // HRS disabled, 50ms wait time between ADC conversion period, current 12.5mA
-  WriteRegister(static_cast<uint8_t>(Registers::Enable), 0x50);
+  // HRS disabled, 0ms wait time between ADC conversion period, current 12.5mA.
+  // Reducing wait time helps increase raw PPG throughput.
+  WriteRegister(static_cast<uint8_t>(Registers::Enable), 0x00);
 
   // Current 12.5mA and low nibble 0xF.
   // Note: Setting low nibble to 0x8 per the datasheet results in
