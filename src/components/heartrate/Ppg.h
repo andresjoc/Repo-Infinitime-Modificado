@@ -17,7 +17,7 @@ namespace Pinetime {
       int8_t Preprocess(uint16_t hrs, uint16_t als);
       int HeartRate();
       void Reset(bool resetDaqBuffer);
-      static constexpr int deltaTms = 100;
+      static constexpr int deltaTms = 40;
       // Daq dataLength: Must be power of 2
       static constexpr uint16_t dataLength = 64;
       static constexpr uint16_t spectrumLength = dataLength >> 1;
@@ -28,8 +28,8 @@ namespace Pinetime {
       // The frequency resolution (Hz)
       static constexpr float freqResolution = sampleFreq / dataLength;
       // Number of samples before each analysis
-      // 0.5 second update rate at 10Hz
-      static constexpr uint16_t overlapWindow = 5;
+      // ~0.5 second update rate at 25Hz
+      static constexpr uint16_t overlapWindow = 13;
       // Maximum number of spectrum running averages
       // Note: actual number of spectra averaged = spectralAvgMax + 1
       static constexpr uint16_t spectralAvgMax = 2;

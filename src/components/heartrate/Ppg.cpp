@@ -83,8 +83,8 @@ namespace {
     // https://www.norwegiancreations.com/2016/03/arduino-tutorial-simple-high-pass-band-pass-and-band-stop-filtering/
 
     int length = signal.size();
-    // 0.268 is ~0.5Hz and 0.816 is ~4Hz cutoff at 10Hz sampling
-    float expAlpha = 0.816f;
+    // Tuned for 25Hz sampling: ~0.5Hz high-pass and ~4Hz low-pass band edges
+    float expAlpha = 0.501f;
     float expAvg = 0.0f;
     for (int loop = 0; loop < 4; loop++) {
       expAvg = signal.front();
@@ -93,7 +93,7 @@ namespace {
         signal[idx] = expAvg;
       }
     }
-    expAlpha = 0.268f;
+    expAlpha = 0.112f;
     for (int loop = 0; loop < 4; loop++) {
       expAvg = signal.front();
       for (int idx = 0; idx < length; idx++) {
