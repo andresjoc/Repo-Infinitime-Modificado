@@ -182,12 +182,12 @@ void SystemTask::Work() {
   measureBatteryTimer = xTimerCreate("measureBattery", batteryMeasurementPeriod, pdTRUE, this, MeasureBatteryTimerCallback);
   xTimerStart(measureBatteryTimer, portMAX_DELAY);
 
-  constexpr TickType_t stateUpdatePeriod = pdMS_TO_TICKS(100);
+  constexpr TickType_t stateUpdatePeriod = pdMS_TO_TICKS(50);
   // Stores when the state (motion, watchdog, time persistence etc) was last updated
   // If there are many events being received by the message queue, this prevents
   // having to update motion etc after every single event, which is bad
   // for efficiency and for motion wake algorithms which expect motion readings
-  // to be 100ms apart
+  // to be 50ms apart (20Hz)
   TickType_t lastStateUpdate = xTaskGetTickCount() - stateUpdatePeriod; // Force immediate run
   TickType_t elapsed;
 
