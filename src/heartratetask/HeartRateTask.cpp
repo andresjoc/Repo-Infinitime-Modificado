@@ -54,7 +54,7 @@ TickType_t HeartRateTask::CurrentTaskDelay() {
 
     // On count overflow, reset both count and start time
     // Count is 16bit to avoid overflow in elapsedTarget
-    // Count overflows every 100ms * u16 max = ~2 hours, much more often than the tick count (~48 days)
+    // Count overflows every 40ms * u16 max = ~44 minutes, much more often than the tick count (~48 days)
     // So no need to check for tick count overflow
     if (count == std::numeric_limits<decltype(count)>::max()) {
       count = 0;
