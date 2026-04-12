@@ -59,11 +59,11 @@ async def main_async(args):
 
     def notification_handler(_sender, data: bytearray):
         nonlocal last_counter
-        if len(data) != 8:
+        if len(data) != 12:
             print(f"Paquete inesperado ({len(data)} bytes): {data.hex()}")
             return
 
-        sample_counter, hrs_raw, als_raw = struct.unpack("<IHH", data)
+        sample_counter, hrs_raw, als_raw = struct.unpack("<III", data)
         if last_counter is not None and sample_counter != (last_counter + 1):
             print(f"Salto de contador: esperado {last_counter + 1}, llegó {sample_counter}")
         last_counter = sample_counter
@@ -101,7 +101,7 @@ async def main_async(args):
         if y_values:
             ymin = min(y_values)
             ymax = max(y_values)
-            pad = max(10, int((ymax - ymin) * 0.1))
+            pad = max(10.0, (ymax - ymin) * 0.1)
             ax.set_ylim(ymin - pad, ymax + pad)
 
         return artists

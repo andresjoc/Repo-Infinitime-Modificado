@@ -87,16 +87,15 @@ Hrs3300::PackedHrsAls Hrs3300::ReadHrsAls() {
   uint8_t m = static_cast<uint8_t>(Registers::C0DataM) - baseOffset;
   uint8_t h = static_cast<uint8_t>(Registers::C0DataH) - baseOffset;
   uint8_t l = static_cast<uint8_t>(Registers::C0dataL) - baseOffset;
-  // There are two extra bits (17 and 18) but they are not read here
-  // as resolutions >16bit aren't practically useful (too slow) and
-  // all hrs values throughout InfiniTime are 16bit
-  res.hrs = (buf[m] << 8) | ((buf[h] & 0x0f) << 4) | (buf[l] & 0x0f);
+  // Parse complete HRS sample to preserve full sensor resolution.
+  // C0DataH contains 6 useful high bits in 15/16/17/18-bit modes.
+  res.hrs = (static_cast<uint32_t>(buf[m]) << 8) | (static_cast<uint32_t>(buf[h] & 0x3f) << 4) | (buf[l] & 0x0f);
 
   // als
   m = static_cast<uint8_t>(Registers::C1dataM) - baseOffset;
   h = static_cast<uint8_t>(Registers::C1dataH) - baseOffset;
   l = static_cast<uint8_t>(Registers::C1dataL) - baseOffset;
-  res.als = ((buf[h] & 0x3f) << 11) | (buf[m] << 3) | (buf[l] & 0x07);
+  res.als = (static_cast<uint32_t>(buf[h] & 0x3f) << 11) | (static_cast<uint32_t>(buf[m]) << 3) | (buf[l] & 0x07);
 
   return res;
 }

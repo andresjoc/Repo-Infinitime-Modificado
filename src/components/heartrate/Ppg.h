@@ -3,6 +3,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <limits>
 // Note: Change internal define 'sqrt_internal sqrt' to
 // 'sqrt_internal sqrtf' to save ~3KB of flash.
 #define sqrt_internal sqrtf
@@ -14,7 +15,7 @@ namespace Pinetime {
     class Ppg {
     public:
       Ppg();
-      int8_t Preprocess(uint16_t hrs, uint16_t als);
+      int8_t Preprocess(uint32_t hrs, uint32_t als);
       int HeartRate();
       void Reset(bool resetDaqBuffer);
       static constexpr int deltaTms = 40;
@@ -53,7 +54,7 @@ namespace Pinetime {
       static constexpr float alsFactor = 2.0f;
 
       // Raw ADC data
-      std::array<uint16_t, dataLength> dataHRS;
+      std::array<float, dataLength> dataHRS;
       // Stores Real numbers from FFT
       std::array<float, dataLength> vReal;
       // Stores Imaginary numbers from FFT
@@ -66,8 +67,8 @@ namespace Pinetime {
       uint16_t avgIndex = 0;
       uint16_t spectralAvgCount = 0;
       float lastPeakLocation = 0.0f;
-      uint16_t alsThreshold = UINT16_MAX;
-      uint16_t alsValue = 0;
+      float alsThreshold = std::numeric_limits<float>::max();
+      float alsValue = 0.0f;
       uint16_t dataIndex = 0;
       float peakLocation;
       bool resetSpectralAvg = true;
