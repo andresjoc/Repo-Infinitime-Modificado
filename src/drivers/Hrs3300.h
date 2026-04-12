@@ -22,7 +22,7 @@ namespace Pinetime {
       };
 
       struct PackedHrsAls {
-        uint16_t hrs;
+        uint32_t hrs;
         uint16_t als;
       };
 

@@ -3,6 +3,7 @@
 #define max
 #include <host/ble_gap.h>
 #include <atomic>
+#include <cstdint>
 #undef max
 #undef min
 
@@ -16,7 +17,7 @@ namespace Pinetime {
       RawPpgService(NimbleController& nimble, Controllers::HeartRateController& heartRateController);
       void Init();
       int OnRawPpgRequested(uint16_t attributeHandle, ble_gatt_access_ctxt* context);
-      void OnNewRawPpgValue(uint16_t hrs, uint16_t als);
+      void OnNewRawPpgValue(uint32_t hrs, uint16_t als);
 
       void SubscribeNotification(uint16_t attributeHandle);
       void UnsubscribeNotification(uint16_t attributeHandle);
@@ -41,7 +42,7 @@ namespace Pinetime {
       struct ble_gatt_svc_def serviceDefinition[2];
 
       uint16_t rawPpgMeasurementHandle;
-      uint16_t lastHrs = 0;
+      uint32_t lastHrs = 0;
       uint16_t lastAls = 0;
       uint32_t sampleCounter = 0;
       std::atomic_bool rawPpgMeasurementNotificationEnabled {false};
