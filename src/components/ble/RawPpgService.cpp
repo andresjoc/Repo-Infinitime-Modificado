@@ -36,10 +36,10 @@ void RawPpgService::Init() {
 
 int RawPpgService::OnRawPpgRequested(uint16_t attributeHandle, ble_gatt_access_ctxt* context) {
   if (attributeHandle == rawPpgMeasurementHandle) {
-    uint8_t buffer[8];
+    uint8_t buffer[10];
     memcpy(&buffer[0], &sampleCounter, sizeof(sampleCounter));
     memcpy(&buffer[4], &lastHrs, sizeof(lastHrs));
-    memcpy(&buffer[6], &lastAls, sizeof(lastAls));
+    memcpy(&buffer[8], &lastAls, sizeof(lastAls));
 
     int res = os_mbuf_append(context->om, buffer, sizeof(buffer));
     return (res == 0) ? 0 : BLE_ATT_ERR_INSUFFICIENT_RES;
@@ -47,7 +47,7 @@ int RawPpgService::OnRawPpgRequested(uint16_t attributeHandle, ble_gatt_access_c
   return 0;
 }
 
-void RawPpgService::OnNewRawPpgValue(uint16_t hrs, uint16_t als) {
+void RawPpgService::OnNewRawPpgValue(uint32_t hrs, uint16_t als) {
   lastHrs = hrs;
   lastAls = als;
   sampleCounter++;
@@ -56,10 +56,10 @@ void RawPpgService::OnNewRawPpgValue(uint16_t hrs, uint16_t als) {
     return;
   }
 
-  uint8_t buffer[8];
+  uint8_t buffer[10];
   memcpy(&buffer[0], &sampleCounter, sizeof(sampleCounter));
   memcpy(&buffer[4], &hrs, sizeof(hrs));
-  memcpy(&buffer[6], &als, sizeof(als));
+  memcpy(&buffer[8], &als, sizeof(als));
 
   auto* om = ble_hs_mbuf_from_flat(buffer, sizeof(buffer));
 

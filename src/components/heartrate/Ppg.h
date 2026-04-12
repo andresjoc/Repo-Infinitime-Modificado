@@ -14,7 +14,7 @@ namespace Pinetime {
     class Ppg {
     public:
       Ppg();
-      int8_t Preprocess(uint16_t hrs, uint16_t als);
+      int8_t Preprocess(uint32_t hrs, uint16_t als);
       int HeartRate();
       void Reset(bool resetDaqBuffer);
       static constexpr int deltaTms = 40;
@@ -53,7 +53,7 @@ namespace Pinetime {
       static constexpr float alsFactor = 2.0f;
 
       // Raw ADC data
-      std::array<uint16_t, dataLength> dataHRS;
+      std::array<uint32_t, dataLength> dataHRS;
       // Stores Real numbers from FFT
       std::array<float, dataLength> vReal;
       // Stores Imaginary numbers from FFT

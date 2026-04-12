@@ -38,7 +38,7 @@ namespace Pinetime {
 
       void SetService(Pinetime::Controllers::HeartRateService* service);
       void SetRawPpgService(Pinetime::Controllers::RawPpgService* rawPpgService);
-      void UpdateRawValues(uint16_t hrs, uint16_t als);
+      void UpdateRawValues(uint32_t hrs, uint16_t als);
 
     private:
       Applications::HeartRateTask* task = nullptr;

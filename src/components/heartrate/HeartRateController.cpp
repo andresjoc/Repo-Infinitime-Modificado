@@ -39,7 +39,7 @@ void HeartRateController::SetRawPpgService(Pinetime::Controllers::RawPpgService*
   this->rawPpgService = rawPpgService;
 }
 
-void HeartRateController::UpdateRawValues(uint16_t hrs, uint16_t als) {
+void HeartRateController::UpdateRawValues(uint32_t hrs, uint16_t als) {
   if (rawPpgService != nullptr) {
     rawPpgService->OnNewRawPpgValue(hrs, als);
   }
