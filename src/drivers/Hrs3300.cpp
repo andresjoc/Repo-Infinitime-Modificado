@@ -87,10 +87,13 @@ Hrs3300::PackedHrsAls Hrs3300::ReadHrsAls() {
   uint8_t m = static_cast<uint8_t>(Registers::C0DataM) - baseOffset;
   uint8_t h = static_cast<uint8_t>(Registers::C0DataH) - baseOffset;
   uint8_t l = static_cast<uint8_t>(Registers::C0dataL) - baseOffset;
-  // There are two extra bits (17 and 18) but they are not read here
-  // as resolutions >16bit aren't practically useful (too slow) and
-  // all hrs values throughout InfiniTime are 16bit
-  res.hrs = (buf[m] << 8) | ((buf[h] & 0x0f) << 4) | (buf[l] & 0x0f);
+  // HRS ADC exposes 18 bits. InfiniTime keeps 16-bit values in the rest of
+  // the pipeline, so include bits 17:16 then downscale with rounding.
+  //
+  // This preserves sub-LSB information instead of truncating it and reduces
+  // visible stair-stepping when the signal amplitude is low.
+  uint32_t rawHrs = (static_cast<uint32_t>(buf[h] & 0x30) << 12) | (buf[m] << 8) | ((buf[h] & 0x0f) << 4) | (buf[l] & 0x0f);
+  res.hrs = static_cast<uint16_t>((rawHrs + 0x2) >> 2);
 
   // als
   m = static_cast<uint8_t>(Registers::C1dataM) - baseOffset;
